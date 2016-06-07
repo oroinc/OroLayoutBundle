@@ -4,12 +4,12 @@ namespace Oro\Bundle\LayoutBundle\Layout\Block\Type;
 
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Component\Layout\Block\Type\ContainerType;
 use Oro\Component\Layout\BlockView;
 use Oro\Component\Layout\BlockInterface;
 use Oro\Component\Layout\BlockBuilderInterface;
+use Oro\Component\Layout\Block\OptionsResolver\OptionsResolver;
 
 use Oro\Bundle\LayoutBundle\Layout\Form\ConfigurableFormAccessorInterface;
 use Oro\Bundle\LayoutBundle\Layout\Form\FormLayoutBuilderInterface;
@@ -22,9 +22,9 @@ use Oro\Bundle\LayoutBundle\Layout\Form\FormLayoutBuilderInterface;
  *  group id = $options['form_group_prefix'] + group name
  *      for example: form:group_myGroup where 'form:group_' is the prefix
  */
-class FormType extends AbstractFormType
+class FormFieldsType extends AbstractFormType
 {
-    const NAME = 'form';
+    const NAME = 'form_fields';
 
     /** @var FormLayoutBuilderInterface */
     protected $formLayoutBuilder;
@@ -40,9 +40,9 @@ class FormType extends AbstractFormType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        parent::setDefaultOptions($resolver);
+        parent::configureOptions($resolver);
         $resolver->setDefaults(
             [
                 // example: ['jobTitle', 'user.lastName']
@@ -71,19 +71,7 @@ class FormType extends AbstractFormType
                 'split_to_fields'   => false
             ]
         );
-        $resolver
-            ->setOptional(['form_data']);
-
-        $resolver->setAllowedTypes(
-            [
-                'preferred_fields'  => 'array',
-                'groups'            => 'array',
-                'form_prefix'       => 'string',
-                'form_field_prefix' => 'string',
-                'form_group_prefix' => 'string',
-                'split_to_fields'   => 'bool',
-            ]
-        );
+        $resolver->setDefined(['form_data']);
     }
 
     /**
